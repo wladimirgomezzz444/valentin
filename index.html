@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>San Valentín 💘</title>
+
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:linear-gradient(135deg,#12001a,#24002f);
+  color:white;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  overflow:hidden;
+}
+
+.card{
+  background:#ffffff18;
+  border:1px solid #ffffff2e;
+  padding:22px;
+  border-radius:22px;
+  width:90%;
+  max-width:420px;
+  position:relative;
+  z-index:2;
+}
+
+button{
+  padding:12px 18px;
+  border:none;
+  border-radius:999px;
+  font-size:16px;
+  margin:6px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+#yes{
+  background:#ff4fa3;
+  font-weight:bold;
+}
+
+#no{
+  background:#333;
+  color:white;
+}
+
+.hidden{display:none;}
+
+.hint{
+  font-size:13px;
+  opacity:.7;
+}
+
+/* corazones animados */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:22px;
+  animation:floatUp 3s linear forwards;
+}
+
+@keyframes floatUp{
+  0%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(-110vh);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="q">
+<h2 id="title">¿Quieres ser mi San Valentín? 💘</h2>
+<p id="sub">Sin presión… pero me haría ilusión 🥺</p>
+
+<button id="yes">Sí 💖</button>
+<button id="no">No 🙄</button>
+
+<div class="hint" id="hint">
+Tip: el botón correcto es obvio 😌
+</div>
+</div>
+
+<div class="card hidden" id="r">
+<h2>Sabía que dirías que sí 😭💘</h2>
+<p>
+Me gustaría pasar ese día contigo y seguir conociéndote 🫶
+</p>
+</div>
+
+<script>
+const yes = document.getElementById("yes");
+const no  = document.getElementById("no");
+const q   = document.getElementById("q");
+const r   = document.getElementById("r");
+const sub = document.getElementById("sub");
+const hint= document.getElementById("hint");
+
+let noClicks = 0;
+let yesScale = 1;
+
+const frases = [
+"¿Segura? 🥺",
+"Piénsalo bien 😳",
+"Yo quería un sí 😭",
+"Última oportunidad 😤",
+"Ok… ya solo queda el sí 😈"
+];
+
+function heart(){
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.textContent = "💖";
+  h.style.left = Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),3000);
+}
+
+// corazones suaves de fondo
+setInterval(()=>{
+  if(Math.random()<0.3) heart();
+},500);
+
+// botón NO
+no.onclick = () => {
+  noClicks++;
+
+  yesScale += 0.2;
+  yes.style.transform = `scale(${yesScale})`;
+
+  sub.textContent = frases[Math.min(noClicks-1,frases.length-1)];
+
+  if(noClicks>=5){
+    no.style.display="none";
+    hint.textContent="Solo queda elegir el sí 😌💖";
+  }
+};
+
+// botón SÍ
+yes.onclick = () => {
+  q.classList.add("hidden");
+  r.classList.remove("hidden");
+
+  // explosión de corazones
+  for(let i=0;i<15;i++){
+    setTimeout(heart,i*120);
+  }
+
+  // abrir WhatsApp
+  setTimeout(()=>{
+    window.location.href =
+      "https://wa.me/593992196131?text=Sí quiero ser tu San Valentín 💘";
+  },1500);
+};
+</script>
+
+</body>
+</html>
